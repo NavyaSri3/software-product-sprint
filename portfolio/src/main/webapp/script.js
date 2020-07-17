@@ -13,10 +13,11 @@
 // limitations under the License.
 
 /**
- * Fetches a random quote from the server and adds it to the DOM.
+ * Fetches a json object from the server and adds it to the DOM.
  */
-function getGreeting() {
-  console.log('Fetching the greeting message.');
+
+function getJsonObject() {
+  console.log('Fetching the Json object.');
 
   // The fetch() function returns a Promise because the request is asynchronous.
   const responsePromise = fetch('/data');
@@ -34,18 +35,32 @@ function handleResponse(response) {
 
   // response.text() returns a Promise, because the response is a stream of
   // content and not a simple variable.
-  const textPromise = response.text();
+  const JsonPromise = response.json();
 
   // When the response is converted to text, pass the result into the
   // addQuoteToDom() function.
-  textPromise.then(addGreetingToDom);
+  JsonPromise.then(addGreetingToDom);
 }
 
 /** Adds a greeting message to the DOM. */
-function addGreetingToDom(greet) {
-  console.log('Adding quote to dom: ' + greet);
+function addGreetingToDom(commentJson) {
+  console.log('Adding quote to dom: ' + commentJson);
 
-  const greetContainer = document.getElementById('greeting-container');
-  greetContainer.innerText = greet;
+  const commentContainer = document.getElementById('comment-container');
+  commentContainer.innerHTML = '';
+  commentContainer.appendChild(
+        createListElement('comment1:' + commentJson.comment1));
+  commentContainer.appendChild(
+        createListElement('comment2:' + commentJson.comment2));
+  commentContainer.appendChild(
+        createListElement('comment3:' + commentJson.comment3));
+    
+  
 }
 
+/** Creates a list node with passed text  */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}
