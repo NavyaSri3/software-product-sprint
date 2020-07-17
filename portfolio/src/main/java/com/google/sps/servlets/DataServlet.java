@@ -26,7 +26,8 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String greet= "Temporary Message- Hello All!! \n (content displayed through server fetch command)";
     response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello Navya!</h1>");
+    response.getWriter().println(greet);
   }
 }
