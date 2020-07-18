@@ -20,13 +20,37 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.ArrayList;
+
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello Navya!</h1>");
+    
+    ArrayList<String> comment= new ArrayList<String>();
+    comment.add("Hello!");
+    comment.add("Hey!");
+    comment.add("Bye!");
+    
+    String commentJson= convertToJson(comment);
+    response.setContentType("application/json;");
+    response.getWriter().println(commentJson);
   }
+  private String convertToJson(ArrayList<String> comment) {
+    String json = "{";
+    json += "\"comment1\": ";
+    json += "\"" + comment.get(0) + "\"";
+    json += ", ";
+    json += "\"comment2\": ";
+    json += "\"" + comment.get(1) + "\"";
+    json += ", ";
+    json += "\"comment3\": ";
+    json += "\"" +comment.get(2)+ "\"";
+    json += "}";
+    return json;
+  }
+
+   
 }
