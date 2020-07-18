@@ -20,6 +20,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
@@ -40,7 +44,6 @@ public class DataServlet extends HttpServlet {
     @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
-    
     String text = getParameter(request, "text-input", "");
     
     //add comments with split over new line 
@@ -50,6 +53,11 @@ public class DataServlet extends HttpServlet {
     
     String commentJson= convertToJson(comment);
    
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("comments", commentJson);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
     // Redirect back to the HTML page.
     response.sendRedirect("/index.html");
   }
