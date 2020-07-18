@@ -6,8 +6,18 @@
     <script src="script.js"></script>
 
   </head>
-  <body>
+  <body >
     <h1>Servlet</h1>
+    
+    <form action="/data" method="POST">
+        <label for="text-input"> Enter line separated Comments</label>
+        <textarea id= "text-input" name="text-input">enter comment here!</textarea>
+        <br/><br/>
+        <input type="submit" value="Submit">
+
+
+
+    </form>
     <p>Click on the fetch button! </p>
     <button onclick="getJsonObject()"> Fetch </button>
     <ul id="comment-container"> </ul>

@@ -48,13 +48,14 @@ function addGreetingToDom(commentJson) {
 
   const commentContainer = document.getElementById('comment-container');
   commentContainer.innerHTML = '';
-  commentContainer.appendChild(
-        createListElement('comment1:' + commentJson.comment1));
-  commentContainer.appendChild(
-        createListElement('comment2:' + commentJson.comment2));
-  commentContainer.appendChild(
-        createListElement('comment3:' + commentJson.comment3));
-    
+  for (var key in commentJson) {
+    if (commentJson.hasOwnProperty(key)) {
+        var val = commentJson[key];
+        commentContainer.appendChild(
+        createListElement(''+key+':' + val));
+        console.log(val);
+  }
+}
   
 }
 
