@@ -21,35 +21,62 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.ArrayList;
-
+import java.util.Arrays;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+ private ArrayList<String> comment= new ArrayList<String>();
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
-    ArrayList<String> comment= new ArrayList<String>();
-    comment.add("Hello!");
-    comment.add("Hey!");
-    comment.add("Bye!");
+
     
     String commentJson= convertToJson(comment);
     response.setContentType("application/json;");
     response.getWriter().println(commentJson);
   }
+
+    @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    
+    String text = getParameter(request, "text-input", "");
+    
+    //add comments with split over new line 
+    String lines[] = text.split("\\r?\\n");
+    comment.addAll(Arrays.asList(lines));
+    // Respond with the result.
+    
+    String commentJson= convertToJson(comment);
+   
+    // Redirect back to the HTML page.
+    response.sendRedirect("/index.html");
+  }
+
+  /**
+   * @return the request parameter, or the default value if the parameter
+   *         was not specified by the client
+   */
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
+  }
   private String convertToJson(ArrayList<String> comment) {
     String json = "{";
-    json += "\"comment1\": ";
-    json += "\"" + comment.get(0) + "\"";
-    json += ", ";
-    json += "\"comment2\": ";
-    json += "\"" + comment.get(1) + "\"";
-    json += ", ";
-    json += "\"comment3\": ";
-    json += "\"" +comment.get(2)+ "\"";
-    json += "}";
-    return json;
+    for (int counter = 0; counter < comment.size(); counter++) { 
+        json+= "\"comment"+ counter+"\":";
+        json += "\"" + comment.get(counter) + "\"";
+        if(counter < comment.size()-1)
+            json+=", ";
+           		
+      }
+    json+= "}";
+    return json;  
+    
   }
 
    
